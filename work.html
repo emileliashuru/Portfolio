@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11110f">
+  <meta name="description" content="Explore Emil Huru's 3D projects, still images, and animation work.">
+  <title>Selected Work — Emil Huru</title>
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+      const navigation = performance.getEntriesByType('navigation')[0];
+      if (navigation && navigation.type === 'reload') {
+        history.replaceState(null, '', location.pathname + location.search);
+        window.scrollTo(0, 0);
+      }
+    }
+  </script>
+  <style>
+    :root { --bg:#11110f; --fg:#f0eee8; --muted:#999890; --line:#34342f; --accent:#d6ff65; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:Arial, Helvetica, sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(1440px, 100% - 56px); margin:auto; }
+    header { position:relative; z-index:2; width:100%; height:84px; display:flex; align-items:center; justify-content:space-between; padding:0 max(28px, calc((100% - 1440px) / 2)); border-bottom:1px solid var(--line); background:var(--bg); color:var(--fg); }
+    .brand { font-size:14px; font-weight:700; letter-spacing:.16em; }
+    nav { display:flex; gap:30px; color:#c6c5be; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
+    nav a:hover, .text-link:hover { color:var(--accent); }
+    .hero { position:relative; display:flex; width:100%; min-height:calc(100vh - 84px); min-height:calc(100svh - 84px); align-items:flex-end; overflow:hidden; isolation:isolate; padding:100px 0 88px; background:var(--bg); }
+    .hero::after { position:absolute; z-index:-1; inset:0; background:linear-gradient(90deg,rgba(17,17,15,.72),rgba(17,17,15,.24) 70%),linear-gradient(0deg,rgba(17,17,15,.82),transparent 70%); content:""; }
+    .hero-video { position:absolute; z-index:-2; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+    .hero-still { position:absolute; z-index:-2; inset:0; background:url("F40_S_BLACKBARS.png") center/cover no-repeat; }
+    .hero-play-button { position:absolute; z-index:1; top:50%; left:50%; display:none; padding:14px 18px; transform:translate(-50%,-50%); border:1px solid rgba(240,238,232,.7); background:rgba(17,17,15,.78); color:var(--fg); font:inherit; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; }
+    .hero[data-autoplay-blocked="true"] .hero-play-button { display:block; }
+    .hero-play-button:hover,.hero-play-button:focus-visible { border-color:var(--accent); color:var(--accent); }
+    .hero-content { position:relative; z-index:1; width:min(1440px, 100% - 56px); margin:0 auto; }
+    .hero h1 { max-width:1100px; }
+    .eyebrow { color:var(--accent); text-transform:uppercase; letter-spacing:.22em; font-size:11px; margin:0 0 26px; }
+    h1 { font-size:clamp(29px, 5.75vw, 83px); line-height:.83; letter-spacing:-.085em; font-weight:500; margin:0; max-width:1100px; }
+    h1 span { display:block; color:#77776f; }
+    .hero-bottom { display:flex; align-items:end; justify-content:space-between; gap:28px; margin-top:36px; }
+    .intro { max-width:420px; color:#c5c4bd; font-size:16px; line-height:1.7; }
+    .text-link { display:inline-block; border-bottom:1px solid var(--fg); padding-bottom:8px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
+    .section-head { display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid var(--line); padding:20px 0 28px; }
+    .section-head h2 { font-size:12px; font-weight:400; letter-spacing:.18em; text-transform:uppercase; margin:0; }
+    .section-head p { color:var(--muted); font-size:12px; margin:0; }
+    .category-nav { display:flex; flex-wrap:wrap; gap:12px 28px; margin:0 0 32px; padding-bottom:20px; border-bottom:1px solid var(--line); }
+    .category-nav a { color:var(--muted); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+    .category-nav a:hover { color:var(--accent); }
+    .grid { display:grid; grid-template-columns:repeat(12, 1fr); align-items:start; gap:28px 14px; }
+    .animation-grid { columns:3; column-gap:20px; padding:0 0 70px; }
+    .animation-card { display:inline-block; width:100%; margin:0 0 30px; break-inside:avoid; }
+    .animation-player { position:relative; overflow:hidden; background:#1a1a18; }
+    .animation-player video { display:block; width:100%; height:auto; aspect-ratio:auto; background:#1a1a18; object-fit:contain; }
+    .animation-controls { position:absolute; inset:auto 0 0; display:flex; align-items:center; gap:10px; padding:34px 12px 10px; background:linear-gradient(transparent,rgba(0,0,0,.78)); color:#f0eee8; opacity:0; pointer-events:none; visibility:hidden; transition:opacity .28s ease,visibility 0s linear .28s; }
+    .animation-player[data-controls-visible="true"] .animation-controls,.animation-player[data-keyboard-focus="true"] .animation-controls { opacity:1; pointer-events:auto; visibility:visible; transition-delay:0s; }
+    .animation-controls button { display:inline-flex; width:30px; height:30px; flex:0 0 auto; align-items:center; justify-content:center; padding:0; border:0; background:transparent; color:inherit; font:inherit; font-size:12px; cursor:pointer; }
+    .animation-controls .animation-sound { width:auto; padding:0 4px; font-size:9px; letter-spacing:.04em; }
+    .animation-controls button:hover { color:var(--accent); }
+    .animation-controls button:focus-visible,.animation-controls input:focus-visible { outline:1px solid var(--accent); outline-offset:3px; }
+    .animation-player:focus-visible { outline:1px solid var(--accent); outline-offset:3px; }
+    .animation-controls input[type="range"] { width:100%; min-width:0; height:3px; flex:1; accent-color:var(--accent); cursor:pointer; }
+    .animation-time { min-width:66px; color:#f0eee8; font-size:10px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .animation-card h3 { margin:12px 0 0; color:var(--muted); font-size:12px; font-weight:400; letter-spacing:.1em; text-transform:uppercase; }
+    .media-pending { max-width:620px; padding:0 0 70px; color:var(--muted); font-size:14px; line-height:1.7; }
+    .project { position:relative; grid-column:span 6; overflow:hidden; background:#24241f; min-height:0; }
+    .project--size-4 { grid-column:span 4; }
+    .project--size-5 { grid-column:span 5; }
+    .project--size-7 { grid-column:span 7; }
+    .project--size-8 { grid-column:span 8; }
+    .project img { display:block; width:100%; height:auto; filter:saturate(.82); transition:filter .6s; }
+    .project:hover img { filter:saturate(1); }
+    .stills-grid { display:block; columns:3; column-gap:20px; padding:0 0 70px; }
+    .stills-grid .project { display:inline-block; width:100%; margin:0 0 20px; break-inside:avoid; grid-column:auto; }
+    .project-info { position:absolute; inset:auto 0 0; padding:54px 22px 20px; background:linear-gradient(transparent,rgba(0,0,0,.75)); display:flex; justify-content:space-between; align-items:end; gap:16px; }
+    .project-info h3 { margin:0 0 5px; font-size:20px; font-weight:500; }
+    .project-info p { margin:0; font-size:11px; color:#d0cfc9; letter-spacing:.1em; text-transform:uppercase; }
+    .arrow { font-size:22px; }
+    .about { display:grid; grid-template-columns:1fr 1fr; gap:40px; padding:100px 0; }
+    .about h2 { font-size:clamp(34px,5vw,66px); line-height:.98; letter-spacing:-.06em; font-weight:500; margin:0; max-width:520px; }
+    .about-copy { max-width:520px; color:#c5c4bd; font-size:15px; line-height:1.8; }
+    .about-copy p { margin:0 0 20px; }
+    .contact { border-top:1px solid var(--line); padding:70px 0 82px; }
+    .contact h2 { font-size:clamp(44px,8vw,105px); line-height:.9; letter-spacing:-.075em; font-weight:500; margin:0 0 30px; }
+    .contact-row { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
+    .contact-links { display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+    footer { border-top:1px solid var(--line); padding:22px 0; color:var(--muted); display:flex; justify-content:space-between; gap:16px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    @media (max-width:700px) {
+      .wrap { width:calc(100% - 32px); }
+      header { height:70px; padding:0 16px; }
+      nav { gap:14px; font-size:10px; }
+      .brand { font-size:12px; }
+      .hero { min-height:calc(100vh - 70px); min-height:calc(100svh - 70px); padding:80px 0 64px; }
+      .hero-content { width:calc(100% - 32px); }
+      .hero-bottom { align-items:start; flex-direction:column; margin-top:28px; }
+      .grid { grid-template-columns:1fr; gap:12px; }
+      .project { grid-column:span 1; }
+      .animation-grid { columns:2; column-gap:14px; padding-bottom:56px; }
+      .stills-grid { columns:2; column-gap:14px; padding-bottom:56px; }
+      .about { grid-template-columns:1fr; gap:28px; padding:72px 0; }
+      .section-head p { max-width:150px; text-align:right; }
+    }
+    @media (max-width:480px) {
+      .animation-grid { columns:1; }
+      .stills-grid { columns:1; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .animation-controls { transition:none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">EMIL HURU</a>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="#projects">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-still" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Portfolio</p>
+        <h1 id="hero-title">Selected work</h1>
+        <div class="hero-bottom">
+          <p class="intro">A collection of worlds, images, and visual stories built through 3D.</p>
+          <a class="text-link" href="#projects">Explore the work ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+
+      <section id="projects" aria-labelledby="work-title">
+        <div class="section-head">
+          <h2 id="work-title">3D Projects</h2>
+          <p>Environments, lighting &amp; visual stories</p>
+        </div>
+        <nav class="category-nav" aria-label="Work categories">
+          <a href="#projects">Projects</a>
+          <a href="#stills">Still Images</a>
+          <a href="#animations">Animations</a>
+        </nav>
+        <div class="grid">
+          <a class="project project--size-7" href="#contact" aria-label="After the Horizon">
+            <img src="F40_S_BLACKBARS.png" alt="White sports car on a forest road">
+            <div class="project-info"><div><h3>After the Horizon</h3><p>3D / Environment</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project project--size-5" href="#contact" aria-label="Last Stop">
+            <img src="Tunnel_HD.png" alt="A dark tunnel with railway tracks" loading="lazy">
+            <div class="project-info"><div><h3>Last Stop</h3><p>3D / Environment</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="After Hours">
+            <img src="Drunkie_1.1.1.png" alt="A figure in a warm, dimly lit room" loading="lazy">
+            <div class="project-info"><div><h3>After Hours</h3><p>3D / Lighting</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Lost in the Woods">
+            <img src="Helicrash.png" alt="A helicopter hidden in a sunlit forest" loading="lazy">
+            <div class="project-info"><div><h3>Lost in the Woods</h3><p>3D / Environment</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project project--size-8" href="#contact" aria-label="The Backrooms">
+            <img src="BACKROOMS_THUMB.png" alt="A dark, abandoned corridor blocked by rubble" width="1365" height="768" loading="lazy">
+            <div class="project-info"><div><h3>The Backrooms</h3><p>3D / Environment</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project project--size-4" href="#contact" aria-label="No One Can Hear You">
+            <img src="UNTITLED_1.png" alt="A sci-fi scene in a dark underpass" loading="lazy">
+            <div class="project-info"><div><h3>No One Can Hear You</h3><p>3D / Sci-fi</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project project--size-8" href="#contact" aria-label="Forest Watch">
+            <img src="Flower.png" alt="A lone figure in a sunlit forest" loading="lazy">
+            <div class="project-info"><div><h3>Forest Watch</h3><p>3D / Environment</p></div><span class="arrow">↗</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section id="stills" aria-labelledby="stills-title">
+        <div class="section-head">
+          <h2 id="stills-title">Still Images</h2>
+          <p>Selected renders and visual studies</p>
+        </div>
+        <div class="stills-grid">
+          <a class="project" href="#contact" aria-label="Forest Crab">
+            <img src="SKOGSKRABBE.jpg" alt="A detailed crab among grass and plants" loading="lazy">
+            <div class="project-info"><div><h3>Forest Crab</h3><p>3D / Creature</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Holy Peak">
+            <img src="Holy Peak.png" alt="A sci-fi landscape with wreckage in snow-covered mountains" loading="lazy">
+            <div class="project-info"><div><h3>Holy Peak</h3><p>3D / Sci-fi</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Cross End">
+            <img src="CROSSEND.png" alt="A dark, atmospheric landscape in shades of red" loading="lazy">
+            <div class="project-info"><div><h3>Cross End</h3><p>3D / Atmosphere</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Neon After Dark">
+            <img src="0222.jpg" alt="A person standing in front of a neon-lit city tower" loading="lazy">
+            <div class="project-info"><div><h3>Neon After Dark</h3><p>3D / City</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Hope">
+            <img src="HOPE.jpg" alt="A silhouetted figure beneath the light between the trees" loading="lazy">
+            <div class="project-info"><div><h3>Hope</h3><p>3D / Study</p></div><span class="arrow">↗</span></div>
+          </a>
+          <a class="project" href="#contact" aria-label="Pink Reverie">
+            <img src="PINKd.jpg" alt="A pink neon sign on a dark street" loading="lazy">
+            <div class="project-info"><div><h3>Pink Reverie</h3><p>3D / Color study</p></div><span class="arrow">↗</span></div>
+          </a>
+        </div>
+      </section>
+
+      <section id="animations" aria-labelledby="animations-title">
+        <div class="section-head">
+          <h2 id="animations-title">Animations</h2>
+          <p>Video previews coming soon</p>
+        </div>
+        <p class="media-pending">Animation videos will be available here soon.</p>
+      </section>
+
+      <section class="about" id="about">
+        <h2>Curiosity is the beginning of everything.</h2>
+        <div class="about-copy">
+          <p>I am a digital artist who enjoys exploring how light, composition, materials, and detail can create a sense of place.</p>
+          <p>My work spans 3D, concept art, and visual storytelling, with a focus on thoughtful composition, atmosphere, and detail.</p>
+          <a class="text-link" href="#contact">Get in touch ↗</a>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <p class="eyebrow">Have a project in mind?</p>
+        <h2>LET'S MAKE<br>SOMETHING.</h2>
+        <div class="contact-row">
+          <p class="intro">Open to creative collaborations and interesting ideas.</p>
+          <div class="contact-links" aria-label="Contact and social links">
+            <a class="text-link" href="mailto:huruemilelias@gmail.com">huruemilelias@gmail.com ↗</a>
+            <a class="text-link" href="https://www.youtube.com/@emileliashuru" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+            <a class="text-link" href="https://www.instagram.com/emil_vfx/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <span>© <span id="year"></span> Emil Huru</span>
+        <span>Built with curiosity.</span>
+        <a href="#top">Back to top ↑</a>
+      </footer>
+    </div>
+  </main>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    if (document.querySelector('.hero-video source')) {
+    const hero = document.querySelector('.hero');
+    const heroVideo = hero.querySelector('.hero-video');
+    const heroPlayButton = hero.querySelector('.hero-play-button');
+    const mobilePlaybackQuery = window.matchMedia('(max-width: 480px)');
+    let heroIsVisible = false;
+    let mobileActiveVideo = null;
+    let mobilePausedVideo = null;
+    let setMobileActiveVideo = () => {};
+
+    const playHeroVideo = () => {
+      if (document.hidden || !heroIsVisible) return;
+      if (mobilePlaybackQuery.matches && [...document.querySelectorAll('.animation-card video')].some(video => !video.paused)) return;
+
+      heroVideo.preload = 'auto';
+      heroVideo.play().then(() => {
+        hero.dataset.autoplayBlocked = 'false';
+      }).catch(error => {
+        if (error.name !== 'AbortError') {
+          hero.dataset.autoplayBlocked = 'true';
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const heroVisibilityObserver = new IntersectionObserver(entries => {
+        const entry = entries[entries.length - 1];
+        heroIsVisible = entry.isIntersecting;
+        if (heroIsVisible) {
+          playHeroVideo();
+        } else {
+          heroVideo.pause();
+          if (heroVideo.readyState > 0) heroVideo.currentTime = 0;
+        }
+      });
+      heroVisibilityObserver.observe(hero);
+    } else {
+      const updateHeroVisibility = () => {
+        const rect = hero.getBoundingClientRect();
+        heroIsVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+        if (heroIsVisible) {
+          playHeroVideo();
+        } else {
+          heroVideo.pause();
+          if (heroVideo.readyState > 0) heroVideo.currentTime = 0;
+        }
+      };
+      window.addEventListener('scroll', updateHeroVisibility, { passive: true });
+      window.addEventListener('resize', updateHeroVisibility);
+      updateHeroVisibility();
+    }
+
+    heroVideo.addEventListener('playing', () => {
+      hero.dataset.autoplayBlocked = 'false';
+    });
+    heroPlayButton.addEventListener('click', () => {
+      if (mobilePlaybackQuery.matches) {
+        animationVideos.forEach(pauseAndReset);
+      }
+      heroVideo.play().then(() => {
+        hero.dataset.autoplayBlocked = 'false';
+      }).catch(error => {
+        console.error('Could not play the banner video.', error);
+      });
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        heroVideo.pause();
+      } else if (heroVideo.paused) {
+        playHeroVideo();
+      }
+    });
+    window.addEventListener('pageshow', () => {
+      if (heroVideo.paused) playHeroVideo();
+    });
+    playHeroVideo();
+
+    const animationVideos = document.querySelectorAll('.animation-card video');
+    const animationPlayerStates = new Map();
+
+    if ('IntersectionObserver' in window) {
+      const previewObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.preload = 'metadata';
+            previewObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+
+      animationVideos.forEach(video => previewObserver.observe(video));
+    } else {
+      animationVideos.forEach(video => {
+        video.preload = 'metadata';
+      });
+    }
+
+    const formatTime = time => {
+      if (!Number.isFinite(time)) return '0:00';
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    };
+
+    animationVideos.forEach(video => {
+      const player = document.createElement('div');
+      player.className = 'animation-player';
+      player.dataset.controlsVisible = 'false';
+      player.setAttribute('role', 'group');
+      player.setAttribute('aria-label', video.getAttribute('aria-label'));
+      player.tabIndex = 0;
+
+      video.parentNode.insertBefore(player, video);
+      player.appendChild(video);
+
+      const controls = document.createElement('div');
+      controls.className = 'animation-controls';
+
+      const playButton = document.createElement('button');
+      playButton.type = 'button';
+      playButton.setAttribute('aria-label', 'Play video');
+      playButton.textContent = '▶';
+
+      const seekBar = document.createElement('input');
+      seekBar.type = 'range';
+      seekBar.min = '0';
+      seekBar.max = '1000';
+      seekBar.value = '0';
+      seekBar.setAttribute('aria-label', 'Seek video');
+
+      const timeLabel = document.createElement('span');
+      timeLabel.className = 'animation-time';
+      timeLabel.textContent = '0:00 / 0:00';
+
+      const soundButton = document.createElement('button');
+      soundButton.type = 'button';
+      soundButton.className = 'animation-sound';
+      soundButton.setAttribute('aria-label', 'Turn sound on');
+      soundButton.textContent = 'SOUND';
+
+      const fullscreenButton = document.createElement('button');
+      fullscreenButton.type = 'button';
+      fullscreenButton.setAttribute('aria-label', 'Enter fullscreen');
+      fullscreenButton.textContent = '⛶';
+
+      controls.append(playButton, seekBar, timeLabel, soundButton, fullscreenButton);
+      player.appendChild(controls);
+
+      let hideTimer;
+      let controlsRequested = false;
+      let lastPointerX;
+      let lastPointerY;
+
+      const updatePlaybackControls = () => {
+        playButton.textContent = video.paused ? '▶' : 'Ⅱ';
+        playButton.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+      };
+
+      const updateSoundControl = () => {
+        soundButton.textContent = video.muted ? 'SOUND' : 'MUTE';
+        soundButton.setAttribute('aria-label', video.muted ? 'Turn sound on' : 'Mute video');
+      };
+
+      const updateProgress = () => {
+        timeLabel.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+        if (Number.isFinite(video.duration) && video.duration > 0 && document.activeElement !== seekBar) {
+          seekBar.value = Math.round(video.currentTime / video.duration * Number(seekBar.max)).toString();
+        }
+      };
+
+      const showControls = (fadeDuringPlayback = false) => {
+        window.clearTimeout(hideTimer);
+        player.dataset.controlsVisible = 'true';
+        if (fadeDuringPlayback && !video.paused && player.dataset.keyboardFocus !== 'true') {
+          hideTimer = window.setTimeout(() => {
+            player.dataset.controlsVisible = 'false';
+          }, 1000);
+        }
+      };
+
+      animationPlayerStates.set(video, {
+        reset: () => {
+          window.clearTimeout(hideTimer);
+          video.pause();
+          if (video.readyState > 0) video.currentTime = 0;
+          controlsRequested = false;
+          player.dataset.controlsVisible = 'false';
+        },
+        showControls
+      });
+
+      const togglePlayback = () => {
+        if (video.paused) {
+          video.play().catch(error => {
+            if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
+              console.error('Could not play animation preview.', error);
+            } else if (error.name === 'NotAllowedError') {
+              controlsRequested = true;
+              showControls();
+            }
+          });
+        } else {
+          video.pause();
+        }
+      };
+
+      playButton.addEventListener('click', () => {
+        controlsRequested = true;
+        if (mobilePlaybackQuery.matches) setMobileActiveVideo(video, !video.paused);
+        togglePlayback();
+      });
+      soundButton.addEventListener('click', () => {
+        controlsRequested = true;
+        video.muted = !video.muted;
+        showControls(!video.paused);
+      });
+      fullscreenButton.addEventListener('click', () => {
+        controlsRequested = true;
+        showControls(!video.paused);
+        if (document.fullscreenElement === player) {
+          document.exitFullscreen().catch(error => console.error('Could not exit fullscreen.', error));
+        } else {
+          player.requestFullscreen().catch(error => console.error('Could not enter fullscreen.', error));
+        }
+      });
+      seekBar.addEventListener('input', () => {
+        controlsRequested = true;
+        showControls(!video.paused);
+        if (Number.isFinite(video.duration) && video.duration > 0) {
+          video.currentTime = Number(seekBar.value) / Number(seekBar.max) * video.duration;
+          updateProgress();
+        }
+      });
+      video.addEventListener('click', () => {
+        controlsRequested = true;
+        if (mobilePlaybackQuery.matches) setMobileActiveVideo(video, !video.paused);
+        togglePlayback();
+        showControls();
+      });
+      video.addEventListener('play', () => {
+        updatePlaybackControls();
+        if (controlsRequested) showControls(true);
+      });
+      video.addEventListener('pause', () => {
+        updatePlaybackControls();
+        if (controlsRequested) showControls();
+      });
+      video.addEventListener('ended', () => {
+        if (controlsRequested) showControls();
+      });
+      video.addEventListener('volumechange', updateSoundControl);
+      video.addEventListener('loadedmetadata', updateProgress);
+      video.addEventListener('timeupdate', updateProgress);
+      player.addEventListener('pointerenter', event => {
+        if (event.pointerType !== 'mouse' || mobilePlaybackQuery.matches) return;
+        video.preload = 'auto';
+        video.muted = true;
+        video.play().catch(error => {
+          if (error.name !== 'NotAllowedError' && error.name !== 'AbortError') {
+            console.error('Could not play animation preview.', error);
+          }
+        });
+      });
+      player.addEventListener('pointermove', event => {
+        const pointerMoved = lastPointerX === undefined
+          || Math.abs(event.clientX - lastPointerX) > 2
+          || Math.abs(event.clientY - lastPointerY) > 2;
+        lastPointerX = event.clientX;
+        lastPointerY = event.clientY;
+        if (pointerMoved && controlsRequested && !video.paused) showControls(true);
+      });
+      player.addEventListener('pointerleave', event => {
+        if (event.pointerType !== 'mouse' || mobilePlaybackQuery.matches) return;
+        window.clearTimeout(hideTimer);
+        video.pause();
+        if (video.readyState > 0) video.currentTime = 0;
+        controlsRequested = false;
+        player.dataset.controlsVisible = 'false';
+      });
+      player.addEventListener('keydown', event => {
+        if (event.target !== player || ![' ', 'k', 'm', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        controlsRequested = true;
+        if (event.key === 'm') {
+          video.muted = !video.muted;
+        } else if (event.key === 'ArrowLeft' && Number.isFinite(video.duration)) {
+          video.currentTime = Math.max(0, video.currentTime - 5);
+        } else if (event.key === 'ArrowRight' && Number.isFinite(video.duration)) {
+          video.currentTime = Math.min(video.duration, video.currentTime + 5);
+        } else {
+          if (mobilePlaybackQuery.matches) setMobileActiveVideo(video, !video.paused);
+          togglePlayback();
+        }
+        showControls(!video.paused);
+      });
+      player.addEventListener('focusin', event => {
+        if (event.target.matches(':focus-visible')) {
+          player.dataset.keyboardFocus = 'true';
+          showControls();
+        }
+      });
+      player.addEventListener('focusout', () => {
+        window.setTimeout(() => {
+          const keyboardFocused = [...player.querySelectorAll('button, input')].some(element => element.matches(':focus-visible'));
+          player.dataset.keyboardFocus = keyboardFocused ? 'true' : 'false';
+          if (!keyboardFocused && !video.paused) showControls(true);
+        }, 0);
+      });
+
+      updatePlaybackControls();
+      updateSoundControl();
+    });
+
+    const mobilePlaybackTargets = [...animationVideos];
+    const pauseAndReset = video => {
+      animationPlayerStates.get(video)?.reset();
+    };
+
+    setMobileActiveVideo = (video, paused) => {
+      if (!mobilePlaybackQuery.matches) return;
+      mobilePlaybackTargets.forEach(target => {
+        if (target !== video) pauseAndReset(target);
+      });
+      mobileActiveVideo = video;
+      mobilePausedVideo = paused ? video : null;
+    };
+
+    const updateMobilePlayback = () => {
+      if (!mobilePlaybackQuery.matches || document.hidden) return;
+
+      const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      const viewportWidth = document.documentElement.clientWidth;
+      let nextVideo = null;
+      let greatestVisibleArea = 0;
+      let nearestCenterDistance = Infinity;
+
+      mobilePlaybackTargets.forEach(video => {
+        const rect = video.getBoundingClientRect();
+        const visibleWidth = Math.max(0, Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0));
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
+        const visibleArea = visibleWidth * visibleHeight;
+        const visibleCenter = (Math.max(rect.top, 0) + Math.min(rect.bottom, viewportHeight)) / 2;
+        const centerDistance = Math.abs(visibleCenter - viewportHeight / 2);
+        if (visibleArea > greatestVisibleArea + 1
+          || (visibleArea > 0 && Math.abs(visibleArea - greatestVisibleArea) <= 1
+            && centerDistance < nearestCenterDistance)) {
+          greatestVisibleArea = visibleArea;
+          nearestCenterDistance = centerDistance;
+          nextVideo = video;
+        }
+      });
+
+      if (nextVideo === mobileActiveVideo) {
+        mobilePlaybackTargets.forEach(target => {
+          if (target !== nextVideo) pauseAndReset(target);
+        });
+        return;
+      }
+
+      mobilePlaybackTargets.forEach(target => {
+        if (target !== nextVideo) pauseAndReset(target);
+      });
+      mobileActiveVideo = nextVideo;
+      mobilePausedVideo = null;
+
+      if (!nextVideo) return;
+      heroVideo.pause();
+      nextVideo.preload = 'auto';
+      nextVideo.play().catch(error => {
+        if (error.name === 'NotAllowedError') {
+          const playerState = animationPlayerStates.get(nextVideo);
+          if (playerState) playerState.showControls();
+        } else if (error.name !== 'AbortError') {
+          console.error('Could not play the selected mobile video.', error);
+        }
+      });
+    };
+
+    let mobilePlaybackFrame;
+    const scheduleMobilePlaybackUpdate = () => {
+      window.cancelAnimationFrame(mobilePlaybackFrame);
+      mobilePlaybackFrame = window.requestAnimationFrame(updateMobilePlayback);
+    };
+
+    if ('IntersectionObserver' in window) {
+      const mobilePlaybackObserver = new IntersectionObserver(scheduleMobilePlaybackUpdate, {
+        threshold: [0, 0.01, 0.1, 0.25, 0.5, 0.75, 1]
+      });
+      mobilePlaybackTargets.forEach(video => mobilePlaybackObserver.observe(video));
+    } else {
+      window.addEventListener('scroll', scheduleMobilePlaybackUpdate, { passive: true });
+      window.addEventListener('resize', scheduleMobilePlaybackUpdate);
+    }
+
+    window.addEventListener('resize', scheduleMobilePlaybackUpdate);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', scheduleMobilePlaybackUpdate);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && mobilePlaybackQuery.matches) {
+        mobilePlaybackTargets.forEach(pauseAndReset);
+      } else {
+        scheduleMobilePlaybackUpdate();
+      }
+    });
+    mobilePlaybackQuery.addEventListener('change', () => {
+      if (mobilePlaybackQuery.matches) {
+        scheduleMobilePlaybackUpdate();
+      } else {
+        mobileActiveVideo = null;
+        mobilePausedVideo = null;
+        mobilePlaybackTargets.forEach(pauseAndReset);
+        if (heroIsVisible) playHeroVideo();
+      }
+    });
+    scheduleMobilePlaybackUpdate();
+    }
+  </script>
+</body>
+</html>
